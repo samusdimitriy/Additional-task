@@ -6,6 +6,7 @@ def parse_input(user_input):
     cmd = cmd.strip().lower()
     return cmd, args
 
+
 def input_error(func):
     def inner(*args, **kwargs):
         try:
@@ -18,7 +19,9 @@ def input_error(func):
             return "Contact not found."
         except Exception as e:
             return f"An error occurred: {str(e)}"
+
     return inner
+
 
 @input_error
 def add_contact(args, book):
@@ -27,6 +30,7 @@ def add_contact(args, book):
     record.add_phone(phone)
     book.add_record(record)
     return "Contact added."
+
 
 @input_error
 def change_contact(args, book):
@@ -38,6 +42,7 @@ def change_contact(args, book):
     else:
         raise KeyError
 
+
 @input_error
 def show_phone(args, book):
     name = args[0]
@@ -47,11 +52,13 @@ def show_phone(args, book):
     else:
         raise KeyError
 
+
 @input_error
 def show_all(book):
     if not book.data:
         return "No contacts found."
     return "\n".join([str(record) for record in book.data.values()])
+
 
 @input_error
 def add_birthday(args, book):
@@ -62,6 +69,7 @@ def add_birthday(args, book):
         return "Birthday added."
     else:
         raise KeyError
+
 
 @input_error
 def show_birthday(args, book):
@@ -75,10 +83,13 @@ def show_birthday(args, book):
     else:
         raise KeyError
 
+
 @input_error
 def birthdays(book):
     next_week_birthdays = book.get_birthdays_per_week()
     if not next_week_birthdays:
         return "No birthdays next week."
     else:
-        return "\n".join([f"{day}: {', '.join(names)}" for day, names in next_week_birthdays.items()])
+        return "\n".join(
+            [f"{day}: {', '.join(names)}" for day, names in next_week_birthdays.items()]
+        )

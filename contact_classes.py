@@ -10,8 +10,10 @@ class Field:
     def __str__(self):
         return str(self.value)
 
+
 class Name(Field):
     pass
+
 
 class Phone(Field):
     def __init__(self, value):
@@ -19,13 +21,15 @@ class Phone(Field):
             raise ValueError("Phone number must be a 10-digit number.")
         super().__init__(value)
 
+
 class Birthday(Field):
     def __init__(self, value):
         try:
-            datetime.strptime(value, '%d.%m.%Y')
+            datetime.strptime(value, "%d.%m.%Y")
         except ValueError:
             raise ValueError("Birthday must be in format DD.MM.YYYY")
         super().__init__(value)
+
 
 class Record:
     def __init__(self, name):
@@ -47,24 +51,24 @@ class Record:
         self.birthday = Birthday(birthday)
 
     def __str__(self):
-        phones_str = '; '.join(str(phone) for phone in self.phones)
+        phones_str = "; ".join(str(phone) for phone in self.phones)
         return f"Contact name: {self.name}, phones: {phones_str}, birthday: {self.birthday}"
+
 
 class AddressBook:
     def __init__(self):
         self.data = {}
 
     def save_to_file(self, filename):
-        with open(filename, 'wb') as f:
+        with open(filename, "wb") as f:
             pickle.dump(self.data, f)
 
     def load_from_file(self, filename):
         try:
-            with open(filename, 'rb') as f:
+            with open(filename, "rb") as f:
                 self.data = pickle.load(f)
         except FileNotFoundError:
             self.data = {}
-
 
     def add_record(self, record):
         self.data[record.name.value] = record
@@ -82,16 +86,18 @@ class AddressBook:
 
         for name, record in self.data.items():
             if record.birthday:
-                birthday = datetime.strptime(record.birthday.value, '%d.%m.%Y').date()
+                birthday = datetime.strptime(record.birthday.value, "%d.%m.%Y").date()
                 birthday_this_year = birthday.replace(year=today.year)
                 if birthday_this_year < today:
                     birthday_this_year = birthday_this_year.replace(year=today.year + 1)
-                
+
                 delta_days = (birthday_this_year - today).days
 
                 if delta_days < 7:
                     if birthday_this_year.weekday() >= 5:
-                        birthday_this_year += timedelta(days=(7 - birthday_this_year.weekday()))
+                        birthday_this_year += timedelta(
+                            days=(7 - birthday_this_year.weekday())
+                        )
                     day_of_week = birthday_this_year.strftime("%A")
                     birthdays_per_week[day_of_week].append(name)
 

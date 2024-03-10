@@ -1,17 +1,26 @@
 from contact_classes import AddressBook
-from bot_commands import parse_input, add_contact, change_contact, show_phone, show_all, add_birthday, show_birthday, birthdays
+from bot_commands import (
+    parse_input,
+    add_contact,
+    change_contact,
+    show_phone,
+    show_all,
+    add_birthday,
+    show_birthday,
+    birthdays,
+)
 
 
 def main():
     book = AddressBook()
-    book.load_from_file('addressbook.pkl')
+    book.load_from_file("addressbook.pkl")
     print("Welcome to the assistant bot!")
     while True:
         user_input = input("Enter a command: ")
         command, args = parse_input(user_input)
 
         if command in ["close", "exit"]:
-            book.save_to_file('addressbook.pkl')
+            book.save_to_file("addressbook.pkl")
             print("Good bye!")
             break
         elif command == "hello":
@@ -32,6 +41,7 @@ def main():
             print(birthdays(book))
         else:
             print("Invalid command.")
+
 
 if __name__ == "__main__":
     main()
